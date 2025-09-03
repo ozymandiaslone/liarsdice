@@ -1,0 +1,28 @@
+(ns liarsdice.core
+  (:require [reagent.core :as r]
+            [reagent.dom :as rdom]
+            [cljs.reader :as reader]
+            [goog.net.XhrIo :as xhr]
+            [goog.json :as json]))
+
+(def app-state (r/atom {:message "Waiting for backend..."}))
+
+(defn poll-backend []
+  (xhr/send
+    "/api/poll"
+    (fn [e]
+      (let [xhr-io (.-target e)
+            response-text (.getResponseText xhr-io)
+            data (js->clj (json/parse response-text) :keywordize-keys true)]
+        (reset! app-state data)))))
+
+(defn app-component []
+  [:div
+   [:h1 "Minimal Clojure/ClojureScript App"]
+   [:p "This is the frontend talking to the backend."]
+   [:p (:message @app-state)]
+   [:p "Timestamp: " (:timestamp @app-state)]])
+
+(defn init-fn []
+  (rdom/render [app-component] (.getElementById js/document "app"))
+  (js/setInterval poll-backend 300))
