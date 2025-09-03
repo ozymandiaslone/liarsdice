@@ -32,4 +32,4 @@
 
 (defn init-fn []
   (rdom/render [app-component] (.getElementById js/document "app"))
-  (js/setInterval poll-backend 500))
+  (js/setInterval poll-backend 300))

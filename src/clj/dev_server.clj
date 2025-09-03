@@ -11,20 +11,30 @@
   (resp/response
    (str "<!DOCTYPE html>"
         (html
-         [:html
+        [:html
           [:head
            [:title "Clojure/ClojureScript Project"]
            [:meta {:charset "UTF-8"}]]
           [:body
            [:div#app]
-           [:script {:src "/js/main.js"}]
+           ;; so :src needs to be "liarsdice/js/main.js"
+           ;; when we are proxying to our ozlabs.dev 
+           ;; because otherwise it would try to grab js
+           ;; from ozlabs.dev/js/main.js whereas it needs
+           ;; to look in ozlabs.dev/liarsdice/js/main.js
+           ;;
+           ;; but if one wanted to do work locally
+           ;; on localhost:3000 without spinning up
+           ;; the reverse proxy it would need to be
+           ;; just "/js/main.js"
+           [:script {:src "liarsdice/js/main.js"}]
            [:script "liarsdice.core.init_fn();"]]]))))
 
 (defn poll-handler
   [_req]
   (-> {:message "Hello from the backend!"
        :timestamp (System/currentTimeMillis)}
-      cheshire.core/generate-string  ; Convert to JSON
+      cheshire.core/generate-string  ; make it JSON
       resp/response
       (resp/header "Content-Type" "application/json")))
 

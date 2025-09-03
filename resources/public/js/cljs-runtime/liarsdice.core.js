@@ -1,7 +1,7 @@
 goog.provide('liarsdice.core');
 liarsdice.core.app_state = reagent.core.atom.cljs$core$IFn$_invoke$arity$1(new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"message","message",-406056002),"Waiting for backend..."], null));
 liarsdice.core.poll_backend = (function liarsdice$core$poll_backend(){
-return goog.net.XhrIo.send("/api/poll",(function (e){
+return goog.net.XhrIo.send("liarsdice/api/poll",(function (e){
 var xhr_io = e.target;
 var response_text = xhr_io.getResponseText();
 var data = cljs.core.js__GT_clj.cljs$core$IFn$_invoke$arity$variadic(goog.json.parse(response_text),cljs.core.prim_seq.cljs$core$IFn$_invoke$arity$2([new cljs.core.Keyword(null,"keywordize-keys","keywordize-keys",1310784252),true], 0));
@@ -14,7 +14,7 @@ return new cljs.core.PersistentVector(null, 5, 5, cljs.core.PersistentVector.EMP
 liarsdice.core.init_fn = (function liarsdice$core$init_fn(){
 reagent.dom.render.cljs$core$IFn$_invoke$arity$2(new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [liarsdice.core.app_component], null),document.getElementById("app"));
 
-return setInterval(liarsdice.core.poll_backend,(300));
+return setInterval(liarsdice.core.poll_backend,(500));
 });
 
 //# sourceMappingURL=liarsdice.core.js.map
